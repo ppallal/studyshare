@@ -83,9 +83,79 @@ struct node* positionInsert( struct node *root, int pos, int val )
 		temp->next = new; 
 		
 	}
+	else printf("Invalid Operation -> Position Out of Bounds\n");
+
+	return root;
+}
+//------------------------------------------------------------
+
+
+struct node* frontDelete( struct node *root )
+{
+	if( root == NULL ) printf("No element To delete\n");
+	else
+	{
+		root = root->next;
+	}
 	return root;
 }
 
+struct node* endDelete( struct node *root )
+{
+	if( root == NULL ) printf("No element To delete\n");
+	else if ( root-> next == NULL ) root = NULL;
+	else
+	{
+		struct node *temp;
+		temp = root;
+		while( temp->next->next != NULL ) temp = temp->next;
+		temp->next = NULL;		
+	}
+	return root;
+}
+
+struct node* positionDelete( struct node *root, int pos )
+{
+	if( root == NULL ) printf("No element To delete\n");
+	else if( pos == 1) root = root->next;
+	else if( pos > 1 )
+	{
+		int i;
+		struct node *temp;
+		temp = root;
+		for( i=1; i<pos-1; i++ )
+		{
+			if( temp->next->next == NULL ) 
+			{
+				printf("Invalid Operation -> Position Out of Bounds\n");
+				return root;
+			}
+			temp = temp->next;
+		}
+		temp->next = temp->next->next;
+	}
+	else printf("Invalid Operation -> Position Out of Bounds\n");
+	return root;
+}
+
+struct node* valueDelete( struct node *root, int val )
+{
+	if( root == NULL ) printf("No element To delete\n");
+	else if( root->val == val ) root = root->next;
+	else
+	{	
+		struct node *temp;
+		temp = root;
+		while( temp->next != NULL )
+		{
+			if( temp->next->val == val ) break;
+			temp = temp->next;
+		}
+		if ( temp->next == NULL ) printf("No Such Element Found\n");
+		else temp->next = temp->next->next;
+	}
+	return root;
+}
 //------------------------------------------------------------
 void display( struct node *root )
 {
@@ -109,7 +179,7 @@ void main()
 	while(c)
 	{
 		printf("\nWelcome to Pallal's Linked List Program\n");
-		printf("Front Insert\t\t\t1\nEnd Insert\t\t\t2\nPosition Insert\t\t3\nExit\t\t\t\t0\nChoice\t:\t");
+		printf("Front Insert\t\t\t1\nEnd Insert\t\t\t2\nPosition Insert\t\t\t3\nFront Delete\t\t\t4\nEnd Delete\t\t\t5\nPosition Delete\t\t\t6\nValue Delete\t\t\t7\nExit\t\t\t\t0\nChoice\t:\t");
 		scanf("%d",&c);
 		if( c==1 || c==2 || c==3 ) 
 		{
@@ -125,6 +195,22 @@ void main()
 				root = positionInsert( root, pos, val );
 			}
 		}
+		else if( c==4 ) root = frontDelete( root );
+		else if( c==5 ) root = endDelete( root );
+		else if( c==6 ) 
+		{
+			int pos;
+			printf("Pos \t:\t");
+			scanf("%d",&pos);
+			root = positionDelete( root, pos );
+		}	
+		else if( c==7 ) 
+		{
+			int val;
+			printf("Val \t:\t");
+			scanf("%d",&val);
+			root = valueDelete( root, val );
+		}	
 		display( root );
 	}
 }
